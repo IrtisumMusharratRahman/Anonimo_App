@@ -43,16 +43,11 @@
         android:paddingLeft="16dp"
         android:paddingTop="36dp"/>
 
-    <EditText
-        android:id="@+id/et_tags"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_feed_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_background"
-        android:padding="16dp"
-        android:hint="Add tags (separated by commas)"
-        android:textColor="#ffffff"
-        android:textColorHint="#B3B3B3"
-        android:textSize="16sp"/>
+        android:orientation="horizontal"/>
 
     <!-- Post button -->
     <Button
