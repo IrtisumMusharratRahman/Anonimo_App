@@ -24,8 +24,6 @@ public class NewPostFragment extends Fragment {
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        newPostViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

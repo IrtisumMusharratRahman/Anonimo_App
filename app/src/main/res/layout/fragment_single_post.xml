@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.single_post.SinglePostFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#121212"
+    android:layout_marginHorizontal="20dp">
 
-    <TextView
+    <include
+        android:id="@+id/single_post_container"
+        layout="@layout/recycler_view_post_container"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="20dp">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:text="User Name"
+            android:inputType="text"
+            android:enabled="false"
+            android:padding="16dp"
+            android:textColor="#ffffff"
+            android:textColorHint="#B3B3B3"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_edit_24"
+            android:padding="15dp"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/edittext_background"/>
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="35dp"/>
+
+</LinearLayout>

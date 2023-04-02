@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.project.anonimo.MainActivity;
 import com.project.anonimo.R;
 import com.project.anonimo.databinding.ActivityLoginBinding;
-import com.project.anonimo.databinding.ActivityMainBinding;
-import com.project.anonimo.ui.feed.FeedViewModel;
 import com.project.anonimo.ui.signup.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,8 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Button button = binding.loginButton;
-        TextView forgotPassword = binding.forgotPassword;
+        Button button = binding.btnLogin;
+        button.setBackground(getDrawable(R.drawable.button_background));
+//        getDrawable(R.drawable.button_background)
+        TextView forgotPassword = binding.tvForgotPassword;
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.new_post.NewPostFragment">
+    android:background="#121212"
+    android:orientation="vertical"
+    android:padding="20dp">
 
+    <!-- Header Text -->
     <TextView
-        android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="What's on your mind?"
+        android:layout_marginTop="30dp"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- EditText for taking input -->
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
+        android:padding="16dp"
+        android:hint="Create New Post"
+        android:maxLines="4"
+        android:textColor="#ffffff"
+        android:textColorHint="#B3B3B3"
+        android:textSize="16sp"
+        android:paddingTop="15dp"/>
+
+    <!-- Tag Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tags"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingLeft="16dp"
+        android:paddingTop="36dp"/>
+
+    <EditText
+        android:id="@+id/et_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
+        android:padding="16dp"
+        android:hint="Add tags (separated by commas)"
+        android:textColor="#ffffff"
+        android:textColorHint="#B3B3B3"
+        android:textSize="16sp"/>
+
+    <!-- Post button -->
+    <Button
+        android:id="@+id/btn_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:text="Post"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+</LinearLayout>
