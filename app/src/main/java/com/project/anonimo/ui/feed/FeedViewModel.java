@@ -26,6 +26,10 @@ public class FeedViewModel extends ViewModel {
         status.setValue(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
     }
 
+    public void setStatus(ApiCallStatus status) {
+        this.status.setValue(status);
+    }
+
     public MutableLiveData<ApiCallStatus> getStatus() {
         return status;
     }

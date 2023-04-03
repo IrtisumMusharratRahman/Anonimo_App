@@ -6,6 +6,12 @@
     android:background="#121212"
     android:layout_marginHorizontal="20dp">
 
+    <include
+        android:id="@+id/profile_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/progress_bar"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,13 +25,13 @@
             android:background="@drawable/edittext_background"
             android:text="User Name"
             android:inputType="text"
-            android:enabled="false"
             android:padding="16dp"
             android:textColor="#ffffff"
             android:textColorHint="#B3B3B3"
             android:textSize="16sp" />
 
         <ImageButton
+            android:id="@+id/edit_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_24"
@@ -58,6 +64,12 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:paddingTop="36dp"/>
+
+    <include
+        android:id="@+id/profile_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/no_data_found"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_myposts"

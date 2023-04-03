@@ -7,6 +7,12 @@
     android:paddingHorizontal="20dp"
     tools:context=".ui.feed.FeedFragment">
 
+    <include
+        android:id="@+id/feed_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        layout="@layout/progress_bar"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +25,12 @@
         android:id="@+id/recycler_view_feed_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <include
+        android:id="@+id/feed_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/no_data_found"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_posts"

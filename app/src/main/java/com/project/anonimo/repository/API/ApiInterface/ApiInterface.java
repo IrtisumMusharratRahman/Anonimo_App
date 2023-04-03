@@ -15,30 +15,31 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    String BASE_URL = "http://103.144.185.216:9090/apis";
+//    String BASE_URL = "http://103.144.185.216:9090/apis/";
+    String BASE_URL = "http://localhost:9090/apis/";
 
 
-    @POST("/signup")
+    @POST("signup")
     Call<String> signUpUser(@Body User user);
 
-    @GET("/signin/{userEmail}/{userPassword}")
+    @GET("signin/{userEmail}/{userPassword}")
     Call<User> signInUser(@Path("userEmail") String userEmail, @Path("userPassword") String userPassword);
 
-    @GET("/getAllPosts")
+    @GET("getAllPosts")
     Call<List<Post>> getAllPosts();
 
-    @POST("/createPost")
+    @POST("createPost")
     Call<String> createPost(@Body Post post);
 
-    @PUT("/changeUserName")
+    @PUT("changeUserName")
     Call<String> updateUserName(@Body User user);
 
-    @DELETE("/deletePost/{postID}")
+    @DELETE("deletePost/{postID}")
     Call<String> deletePost(@Path("postID") String postID);
 
-    @GET("/getPost/{postID}")
+    @GET("getPost/{postID}")
     Call<Post> getPost(@Path("postID") String postID);
 
-    @POST("/addComment")
+    @POST("addComment")
     Call<String> addComment(@Body Comment comment);
 }

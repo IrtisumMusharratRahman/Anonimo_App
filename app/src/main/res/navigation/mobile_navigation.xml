@@ -22,4 +22,10 @@
         android:name="com.project.anonimo.ui.profile.ProfileFragment"
         android:label="@string/title_Profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_single_post"
+        android:name="com.project.anonimo.ui.single_post.SinglePostFragment"
+        android:label="@string/title_newPost"
+        tools:layout="@layout/fragment_single_post" />
 </navigation>

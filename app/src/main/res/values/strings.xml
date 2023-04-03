@@ -3,4 +3,5 @@
     <string name="title_feed">Feed</string>
     <string name="title_newPost">New Post</string>
     <string name="title_Profile">Profile</string>
+    <string name="title_single_post">Post</string>
 </resources>

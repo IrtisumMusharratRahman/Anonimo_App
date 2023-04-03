@@ -10,11 +10,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.project.anonimo.data.model.User;
 import com.project.anonimo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,24 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String id = extras.getString("id");
+            String name = extras.getString("name");
+            String email = extras.getString("email");
+            String password = extras.getString("password");
+            setUser(new User(id,name,email,password));
+        }
+
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

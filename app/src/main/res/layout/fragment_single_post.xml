@@ -7,6 +7,12 @@
     android:layout_marginHorizontal="20dp">
 
     <include
+        android:id="@+id/singele_post_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        layout="@layout/progress_bar"/>
+
+    <include
         android:id="@+id/single_post_container"
         layout="@layout/recycler_view_post_container"/>
 
@@ -17,7 +23,7 @@
         android:layout_marginVertical="20dp">
 
         <EditText
-            android:id="@+id/user_name"
+            android:id="@+id/do_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,6 +37,7 @@
             android:textSize="16sp" />
 
         <ImageButton
+            android:id="@+id/comment_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_24"
@@ -40,6 +47,12 @@
 
     </LinearLayout>
 
+
+    <include
+        android:id="@+id/single_post_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/no_data_found"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
