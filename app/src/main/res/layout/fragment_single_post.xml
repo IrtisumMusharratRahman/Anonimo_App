@@ -28,10 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/edittext_background"
-            android:text="User Name"
+            android:hint="User Name"
             android:inputType="text"
-            android:enabled="false"
-            android:padding="16dp"
+            android:padding="12dp"
             android:textColor="#ffffff"
             android:textColorHint="#B3B3B3"
             android:textSize="16sp" />

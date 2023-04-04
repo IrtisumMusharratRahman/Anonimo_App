@@ -33,6 +33,9 @@ public class ProfileViewModel extends ViewModel {
 
         deleteStatus = new MutableLiveData<>();
         deleteStatus.setValue(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
+
+        postStatus = new MutableLiveData<>();
+        postStatus.setValue(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
     }
 
     public MutableLiveData<ApiCallStatus> getPostStatus() {

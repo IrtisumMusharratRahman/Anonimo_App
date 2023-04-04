@@ -16,7 +16,7 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 //    String BASE_URL = "http://103.144.185.216:9090/apis/";
-    String BASE_URL = "http://localhost:9090/apis/";
+    String BASE_URL = "http://192.168.1.8:9090/apis/";
 
 
     @POST("signup")
@@ -41,5 +41,5 @@ public interface ApiInterface {
     Call<Post> getPost(@Path("postID") String postID);
 
     @POST("addComment")
-    Call<String> addComment(@Body Comment comment);
+    Call<String> addComment(@Body Post post);
 }

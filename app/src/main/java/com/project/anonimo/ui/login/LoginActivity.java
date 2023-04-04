@@ -53,8 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 loginViewModel.signInUser(name.getText().toString(),password.getText().toString());
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -68,12 +66,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(loginViewModel.getUser()!=null){
                             User user =loginViewModel.getUser();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.putExtra("id",user.getUserID());
-                            intent.putExtra("name",user.getUserName());
-                            intent.putExtra("email",user.getUserEmail());
-                            intent.putExtra("password",user.getUserPassword());
-                            startActivity(intent);
+                            if (!(user.getUserID()==null)){
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.putExtra("id",user.getUserID());
+                                intent.putExtra("name",user.getUserName());
+                                intent.putExtra("email",user.getUserEmail());
+                                intent.putExtra("password",user.getUserPassword());
+                                startActivity(intent);
+                            }else {
+                                Toast.makeText(loginActivity,"Login Failed",Toast.LENGTH_LONG).show();
+                            }
+
                         }
 
                         break;

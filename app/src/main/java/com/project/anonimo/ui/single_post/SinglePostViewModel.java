@@ -64,9 +64,9 @@ public class SinglePostViewModel extends ViewModel {
         });
     }
 
-    public void addComment(Comment comment){
+    public void addComment(Post post){
         this.apiInterface = ApiClient.getInstance().getApiInterface();
-        Call<String> call = this.apiInterface.addComment(comment);
+        Call<String> call = this.apiInterface.addComment(post);
 
         call.enqueue(new Callback<String>() {
             @Override

@@ -22,7 +22,12 @@ import com.project.anonimo.adapter.TagRecyclerAdapter;
 import com.project.anonimo.data.ApiCallStatus;
 import com.project.anonimo.data.ApiCallStatusValue;
 
+import com.project.anonimo.data.model.Post;
 import com.project.anonimo.databinding.FragmentFeedBinding;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class FeedFragment extends Fragment {
 
@@ -81,7 +86,16 @@ public class FeedFragment extends Fragment {
                                 postRv.setVisibility(View.GONE);
 
                             }else {
-                                adapter = new PostRecyclerAdapter(feedViewModel.getPosts(),fragment);
+
+                                List<Post> temp = feedViewModel.getPosts();
+                                Collections.sort(temp, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post1, Post post2) {
+                                        return post2.getPostTime().compareTo(post1.getPostTime());
+                                    }
+                                });
+
+                                adapter = new PostRecyclerAdapter(temp,fragment);
                                 postRv.setHasFixedSize(true);
                                 postRv.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 postRv.setAdapter(adapter);

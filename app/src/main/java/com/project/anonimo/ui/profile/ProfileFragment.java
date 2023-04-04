@@ -24,8 +24,14 @@ import com.project.anonimo.R;
 import com.project.anonimo.adapter.PostRecyclerAdapter;
 import com.project.anonimo.data.ApiCallStatus;
 import com.project.anonimo.data.ApiCallStatusValue;
+import com.project.anonimo.data.model.Post;
 import com.project.anonimo.data.model.User;
 import com.project.anonimo.databinding.FragmentProfileBinding;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -39,6 +45,8 @@ public class ProfileFragment extends Fragment {
     private RecyclerView myPostRV;
     private ProfileFragment fragment;
     private PostRecyclerAdapter adapter;
+    private MainActivity mainActivity;
+    private User newUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +73,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
 
-        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
 
         User user = mainActivity.getUser();
 
@@ -79,7 +87,7 @@ public class ProfileFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User newUser = new User(user.getUserID(),user_name.getText().toString(),user.getUserEmail(),user.getUserPassword());
+                newUser = new User(user.getUserID(),user_name.getText().toString(),user.getUserEmail(),user.getUserPassword());
                 profileViewModel.updateUserName(newUser);
             }
         });
@@ -93,6 +101,7 @@ public class ProfileFragment extends Fragment {
                         break;
                     case ApiCallStatusValue.FINISHED:
                         progressBar.setVisibility(View.GONE);
+                        mainActivity.setUser(newUser);
                         NavHostFragment.findNavController(fragment).navigate(R.id.navigation_Profile);
 
                         break;
@@ -122,7 +131,24 @@ public class ProfileFragment extends Fragment {
                                 myPostRV.setVisibility(View.GONE);
 
                             }else {
-                                adapter = new PostRecyclerAdapter(profileViewModel.getPosts(),fragment);
+
+                                List<Post> postList = profileViewModel.getPosts();
+                                List<Post> myPosts = new ArrayList<>();
+                                for (int i=0;i<postList.size();i++){
+                                    if (mainActivity.getUser().getUserID().equals(postList.get(i).getUserID())){
+                                        myPosts.add(postList.get(i));
+                                    }
+                                }
+
+                                Collections.sort(myPosts, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post1, Post post2) {
+                                        return post2.getPostTime().compareTo(post1.getPostTime());
+                                    }
+                                });
+
+
+                                adapter = new PostRecyclerAdapter(myPosts,fragment);
                                 myPostRV.setHasFixedSize(true);
                                 myPostRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 myPostRV.setAdapter(adapter);

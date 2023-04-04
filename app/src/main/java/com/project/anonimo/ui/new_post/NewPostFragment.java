@@ -60,7 +60,7 @@ public class NewPostFragment extends Fragment {
                         UUID.randomUUID().toString(),
                         mainActivity.getUser().getUserID(),
                         content.getText().toString(),
-                        Tags.getInstance().getMyList().get(0),
+                        "Testing",
                         String.valueOf(Calendar.getInstance().getTimeInMillis()),
                         new ArrayList<Comment>()
                         );

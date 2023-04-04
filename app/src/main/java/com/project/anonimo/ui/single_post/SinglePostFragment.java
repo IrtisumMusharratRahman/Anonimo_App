@@ -31,6 +31,7 @@ import com.project.anonimo.data.model.Post;
 import com.project.anonimo.databinding.FragmentProfileBinding;
 import com.project.anonimo.databinding.FragmentSinglePostBinding;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,7 @@ public class SinglePostFragment extends Fragment {
     private List<Comment> comments;
     private CommentRecyclerAdapter adapter;
     private SinglePostFragment fragment;
+    private Post singlePost;
 
     public static SinglePostFragment newInstance() {
         return new SinglePostFragment();
@@ -103,11 +105,11 @@ public class SinglePostFragment extends Fragment {
                     case ApiCallStatusValue.FINISHED:
                         progressBar.setVisibility(View.GONE);
 
-                        Post post = mViewModel.getPost();
-                        content.setText(post.getPostContent());
-                        time.setText(post.getPostTime());
-                        tag.setText(post.getPostTag());
-                        comments=post.getComments();
+                        singlePost = mViewModel.getPost();
+                        content.setText(singlePost.getPostContent());
+                        time.setText(singlePost.getPostTime());
+                        tag.setText(singlePost.getPostTag());
+                        comments=singlePost.getComments();
 
                         if(comments!=null&&comments.isEmpty()){
                             adapter = new CommentRecyclerAdapter(comments);
@@ -132,7 +134,10 @@ public class SinglePostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Comment comment = new Comment(UUID.randomUUID().toString(),postID,doComment.getText().toString(),String.valueOf(Calendar.getInstance().getTimeInMillis()));
-                mViewModel.addComment(comment);
+                List<Comment> newCommentList = singlePost.getComments();
+                newCommentList.add(comment);
+                singlePost.setComments(newCommentList);
+                mViewModel.addComment(singlePost);
             }
         });
 

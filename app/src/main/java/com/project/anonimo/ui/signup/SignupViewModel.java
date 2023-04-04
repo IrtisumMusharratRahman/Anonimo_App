@@ -1,5 +1,7 @@
 package com.project.anonimo.ui.signup;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -47,6 +49,7 @@ public class SignupViewModel extends ViewModel {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 status.setValue(new ApiCallStatus(ApiCallStatusValue.FAILURE));
+                Log.e("TAG", "onFailure: "+ t.getMessage());
             }
         });
     }
