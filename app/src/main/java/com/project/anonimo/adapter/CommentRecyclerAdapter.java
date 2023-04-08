@@ -12,7 +12,10 @@ import com.project.anonimo.R;
 import com.project.anonimo.data.model.Comment;
 import com.project.anonimo.data.model.Post;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecyclerAdapter.ViewHolder> {
     private List<Comment> comments;
@@ -32,7 +35,13 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = comments.get(position);
-        holder.textPostTime.setText(comment.getCommentTime());
+
+        String time = comment.getCommentTime();
+        Date date = new Date(Long.parseLong(time));
+        SimpleDateFormat formatter = new SimpleDateFormat("h:mm a, MMM dd,yyyy", Locale.ENGLISH);
+        String formattedDate = formatter.format(date);
+
+        holder.textPostTime.setText(formattedDate);
         holder.textContent.setText(comment.getCommentContent());
     }
 

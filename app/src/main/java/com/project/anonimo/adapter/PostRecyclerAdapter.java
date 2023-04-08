@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.project.anonimo.R;
 import com.project.anonimo.data.model.Post;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapter.ViewHolder> {
     private List<Post> posts;
@@ -39,7 +42,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post blogPost = posts.get(position);
-        holder.textPostTime.setText(blogPost.getPostTime());
+        String time = blogPost.getPostTime();
+        Date date = new Date(Long.parseLong(time));
+        SimpleDateFormat formatter = new SimpleDateFormat("h:mm a, MMM dd,yyyy", Locale.ENGLISH);
+        String formattedDate = formatter.format(date);
+        holder.textPostTime.setText(formattedDate);
         holder.textContent.setText(blogPost.getPostContent());
         holder.textTag.setText(blogPost.getPostTag());
 

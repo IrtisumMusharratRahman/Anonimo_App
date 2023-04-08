@@ -31,9 +31,12 @@ import com.project.anonimo.data.model.Post;
 import com.project.anonimo.databinding.FragmentProfileBinding;
 import com.project.anonimo.databinding.FragmentSinglePostBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class SinglePostFragment extends Fragment {
@@ -107,11 +110,15 @@ public class SinglePostFragment extends Fragment {
 
                         singlePost = mViewModel.getPost();
                         content.setText(singlePost.getPostContent());
-                        time.setText(singlePost.getPostTime());
+                        String t = singlePost.getPostTime();
+                        Date date = new Date(Long.parseLong(t));
+                        SimpleDateFormat formatter = new SimpleDateFormat("h:mm a, MMM dd,yyyy", Locale.ENGLISH);
+                        String formattedDate = formatter.format(date);
+                        time.setText(formattedDate);
                         tag.setText(singlePost.getPostTag());
                         comments=singlePost.getComments();
 
-                        if(comments!=null&&comments.isEmpty()){
+                        if(comments!=null && !comments.isEmpty()){
                             adapter = new CommentRecyclerAdapter(comments);
                             commentRv.setHasFixedSize(true);
                             commentRv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -153,7 +160,8 @@ public class SinglePostFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("postID", postID);
 
-                        NavHostFragment.findNavController(fragment).navigate(R.id.navigation_single_post, bundle);
+//                        NavHostFragment.findNavController(fragment).navigate(R.id.navigation_single_post, bundle);
+                        mViewModel.getPost(postID);
 
                         break;
                     case ApiCallStatusValue.FAILURE:

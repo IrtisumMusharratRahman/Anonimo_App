@@ -5,13 +5,17 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.project.anonimo.data.model.User;
 import com.project.anonimo.databinding.ActivityMainBinding;
+import com.project.anonimo.ui.feed.FeedFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +47,23 @@ public class MainActivity extends AppCompatActivity {
             String email = extras.getString("email");
             String password = extras.getString("password");
             setUser(new User(id,name,email,password));
+        }
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main);
+
+        NavController navController = NavHostFragment.findNavController(currentFragment);
+        int currentDestination = navController.getCurrentDestination().getId();
+
+        if (currentDestination == R.id.navigation_feed) {
+            finishAffinity();
+        } else {
+            navController.navigateUp();
         }
 
     }

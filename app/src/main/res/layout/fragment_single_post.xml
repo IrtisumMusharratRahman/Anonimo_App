@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#121212"
-    android:layout_marginHorizontal="20dp">
+    android:paddingHorizontal="12dp">
 
     <include
         android:id="@+id/singele_post_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         layout="@layout/progress_bar"/>
 
     <include
@@ -20,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="20dp">
+        android:layout_marginVertical="5dp">
 
         <EditText
             android:id="@+id/do_comment"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/edittext_background"
-            android:hint="User Name"
+            android:hint="Comment..."
             android:inputType="text"
             android:padding="12dp"
             android:textColor="#ffffff"
@@ -40,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_24"
-            android:padding="15dp"
+            android:padding="11dp"
             android:layout_marginLeft="4dp"
             android:background="@drawable/edittext_background"/>
 
