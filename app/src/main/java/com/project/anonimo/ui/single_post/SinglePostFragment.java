@@ -34,6 +34,8 @@ import com.project.anonimo.databinding.FragmentSinglePostBinding;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -119,6 +121,12 @@ public class SinglePostFragment extends Fragment {
                         comments=singlePost.getComments();
 
                         if(comments!=null && !comments.isEmpty()){
+                            Collections.sort(comments, new Comparator<Comment>() {
+                                @Override
+                                public int compare(Comment comment1, Comment comment2) {
+                                    return comment2.getCommentTime().compareTo(comment1.getCommentTime());
+                                }
+                            });
                             adapter = new CommentRecyclerAdapter(comments);
                             commentRv.setHasFixedSize(true);
                             commentRv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -162,6 +170,7 @@ public class SinglePostFragment extends Fragment {
 
 //                        NavHostFragment.findNavController(fragment).navigate(R.id.navigation_single_post, bundle);
                         mViewModel.getPost(postID);
+                        doComment.setText("");
 
                         break;
                     case ApiCallStatusValue.FAILURE:

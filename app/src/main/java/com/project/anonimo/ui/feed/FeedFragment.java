@@ -17,31 +17,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.anonimo.MainActivity;
+import com.project.anonimo.adapter.OnItemClickListener;
 import com.project.anonimo.adapter.PostRecyclerAdapter;
 import com.project.anonimo.adapter.TagRecyclerAdapter;
 import com.project.anonimo.data.ApiCallStatus;
 import com.project.anonimo.data.ApiCallStatusValue;
 
+import com.project.anonimo.data.Tags;
 import com.project.anonimo.data.model.Post;
 import com.project.anonimo.databinding.FragmentFeedBinding;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements OnItemClickListener {
 
     private FragmentFeedBinding binding;
     private PostRecyclerAdapter adapter;
-//    private TagRecyclerAdapter tagRecyclerAdapter;
     private FeedViewModel feedViewModel;
 
-    ProgressBar progressBar;
-    TextView noData;
-    RecyclerView tagRV;
-    RecyclerView postRv;
+    private ProgressBar progressBar;
+    private TextView noData;
+    private RecyclerView tagRV;
+    private RecyclerView postRv;
     private FeedFragment fragment;
-//    private Tags tags;
+    private String postTag;
+    private Tags tags;
+    private List<Post> posts;
+
+    private TagRecyclerAdapter tagRecyclerAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,11 +61,9 @@ public class FeedFragment extends Fragment {
         noData = binding.feedNoData.getRoot();
         tagRV = binding.recyclerViewFeedTag;
         postRv = binding.recyclerViewPosts;
-//        tags =Tags.getInstance();
+        tags= Tags.getInstance();
 
         fragment=this;
-
-
 
         return root;
     }
@@ -94,16 +98,24 @@ public class FeedFragment extends Fragment {
                                         return post2.getPostTime().compareTo(post1.getPostTime());
                                     }
                                 });
+                                posts=temp;
 
-                                adapter = new PostRecyclerAdapter(temp,fragment);
+                                adapter = new PostRecyclerAdapter(posts,fragment);
                                 postRv.setHasFixedSize(true);
                                 postRv.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 postRv.setAdapter(adapter);
 
-//                                tagRecyclerAdapter = new TagRecyclerAdapter(tags.getMyList());
-//                                tagRecyclerAdapter.setHasFixedSize(true);
-//                                tagRecyclerAdapter.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                                tagRecyclerAdapter.setAdapter(adapter);
+
+                                List<String> list = tags.getMyList();
+                                if (!list.get(0).equals("all")){
+                                    list.add(0,"all");
+                                }
+                                tagRecyclerAdapter = new TagRecyclerAdapter(list);
+                                tagRecyclerAdapter.setOnItemClickListener(fragment);
+                                tagRV.setHasFixedSize(true);
+                                tagRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                                tagRV.setAdapter(tagRecyclerAdapter);
+
                             }
                         }
 
@@ -117,6 +129,12 @@ public class FeedFragment extends Fragment {
                 }
             }
         });
+
+
+
+
+
+
         super.onStart();
     }
 
@@ -124,5 +142,30 @@ public class FeedFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(Object data) {
+        postTag=(String) data;
+
+        if (postTag!=null && posts != null && !posts.isEmpty()){
+            if (postTag.equals("all")){
+                adapter = new PostRecyclerAdapter(posts,fragment);
+                postRv.setHasFixedSize(true);
+                postRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+                postRv.setAdapter(adapter);
+            }else {
+                List<Post> temp = new ArrayList<>();
+                for (int i=0;i<posts.size();i++){
+                    if (posts.get(i).getPostTag().equals(postTag)){
+                        temp.add(posts.get(i));
+                    }
+                }
+                adapter = new PostRecyclerAdapter(temp,fragment);
+                postRv.setHasFixedSize(true);
+                postRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+                postRv.setAdapter(adapter);
+            }
+        }
     }
 }

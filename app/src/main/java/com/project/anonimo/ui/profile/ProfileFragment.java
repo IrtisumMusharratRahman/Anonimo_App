@@ -16,11 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.anonimo.MainActivity;
 import com.project.anonimo.R;
+import com.project.anonimo.adapter.OnItemClickListener;
 import com.project.anonimo.adapter.PostRecyclerAdapter;
 import com.project.anonimo.data.ApiCallStatus;
 import com.project.anonimo.data.ApiCallStatusValue;
@@ -47,6 +49,8 @@ public class ProfileFragment extends Fragment {
     private PostRecyclerAdapter adapter;
     private MainActivity mainActivity;
     private User newUser;
+    private String deletePostID;
+    private List<Post> myPosts;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -102,7 +106,10 @@ public class ProfileFragment extends Fragment {
                     case ApiCallStatusValue.FINISHED:
                         progressBar.setVisibility(View.GONE);
                         mainActivity.setUser(newUser);
-                        NavHostFragment.findNavController(fragment).navigate(R.id.navigation_Profile);
+                        User user = mainActivity.getUser();
+
+                        user_name.setText(user.getUserName());
+                        user_email.setText(user.getUserEmail());
 
                         break;
                     case ApiCallStatusValue.FAILURE:
@@ -133,7 +140,7 @@ public class ProfileFragment extends Fragment {
                             }else {
 
                                 List<Post> postList = profileViewModel.getPosts();
-                                List<Post> myPosts = new ArrayList<>();
+                                myPosts = new ArrayList<>();
                                 for (int i=0;i<postList.size();i++){
                                     if (mainActivity.getUser().getUserID().equals(postList.get(i).getUserID())){
                                         myPosts.add(postList.get(i));
@@ -152,6 +159,7 @@ public class ProfileFragment extends Fragment {
                                 myPostRV.setHasFixedSize(true);
                                 myPostRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 myPostRV.setAdapter(adapter);
+                                new ItemTouchHelper(new SwipeToDeleteCallback(adapter)).attachToRecyclerView(myPostRV);
                             }
                         }
 
@@ -159,6 +167,27 @@ public class ProfileFragment extends Fragment {
                     case ApiCallStatusValue.FAILURE:
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getActivity(),"Data Fetching Failed",Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+
+                }
+            }
+        });
+
+        profileViewModel.getDeleteStatus().observe(getViewLifecycleOwner(), new Observer<ApiCallStatus>() {
+            @Override
+            public void onChanged(ApiCallStatus apiCallStatus) {
+                switch (profileViewModel.getDeleteStatus().getValue().getStatus()){
+                    case ApiCallStatusValue.PROCESSING:
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case ApiCallStatusValue.FINISHED:
+                        progressBar.setVisibility(View.GONE);
+                        profileViewModel.setPostStatus(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
+                        profileViewModel.getAllPosts();
+                        break;
+                    case ApiCallStatusValue.FAILURE:
+                        Toast.makeText(getActivity(),"Delete My Post Failed",Toast.LENGTH_LONG).show();
                         break;
                     default:
 
@@ -174,4 +203,26 @@ public class ProfileFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+
+        public SwipeToDeleteCallback(PostRecyclerAdapter adapter) {
+            super(0, ItemTouchHelper.LEFT);
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            if (myPosts!=null && !myPosts.isEmpty()){
+            deletePostID=myPosts.get(position).getPostID();
+            profileViewModel.deletePost(deletePostID);
+        }
+    }
+}
 }

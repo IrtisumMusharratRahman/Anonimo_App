@@ -8,6 +8,7 @@ public class Tags {
     private List<String> tags;
 
     private Tags() {
+        tags =new ArrayList<>();
         tags.add("art");
         tags.add("business");
         tags.add("culture");

@@ -25,11 +25,13 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
     private Fragment fragment;
     private View view;
 
+
     public PostRecyclerAdapter(List<Post> blogPosts,Fragment fragment) {
 
         this.posts = blogPosts;
         this.fragment=fragment;
     }
+
 
     @NonNull
     @Override
@@ -69,7 +71,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
         return posts.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textPostTime;
         public TextView textContent;
         public TextView textTag;
@@ -79,6 +81,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
             textPostTime = itemView.findViewById(R.id.text_post_time);
             textContent = itemView.findViewById(R.id.text_content);
             textTag = itemView.findViewById(R.id.text_tag);
+
         }
     }
 }
