@@ -2,17 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:background="#121212"
     android:orientation="vertical"
     android:paddingHorizontal="20dp">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_launcher_foreground" />
+
 
     <EditText
         android:id="@+id/et_username"
@@ -20,8 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:background="@drawable/edittext_background"
-        android:drawableLeft="@drawable/ic_person_outline"
-        android:hint="Username"
+        android:hint="Email"
         android:padding="15dp"
         android:textColor="#ffffff"
         android:textColorHint="#B3B3B3"
@@ -33,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/edittext_background"
-        android:drawableLeft="@drawable/ic_lock_outline"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="15dp"

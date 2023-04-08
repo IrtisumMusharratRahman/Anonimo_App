@@ -5,7 +5,9 @@
     android:background="#121212"
     android:orientation="vertical"
     android:paddingHorizontal="12dp"
-    android:paddingBottom="?attr/actionBarSize">
+    android:layout_marginTop="10dp"
+    android:paddingBottom="?attr/actionBarSize"
+    android:paddingTop="?attr/actionBarSize">
 
     <include
         android:id="@+id/feed_progress_bar"
@@ -15,6 +17,7 @@
         layout="@layout/progress_bar"/>
 
     <TextView
+        android:id="@+id/tagHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Find Posts By Tags"

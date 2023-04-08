@@ -1,11 +1,13 @@
 package com.project.anonimo.ui.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.anonimo.MainActivity;
+import com.project.anonimo.R;
 import com.project.anonimo.data.ApiCallStatus;
 import com.project.anonimo.data.ApiCallStatusValue;
 import com.project.anonimo.data.model.User;
@@ -44,6 +47,11 @@ public class SignupActivity extends AppCompatActivity {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.black));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+        }
+
         EditText name = binding.etUsername;
         EditText email = binding.etEmail;
         EditText pass = binding.etPassword;
@@ -55,8 +63,14 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                User user = new User(UUID.randomUUID().toString(),name.getText().toString(),email.getText().toString(),pass.getText().toString());
-                signupViewModel.signUpUser(user);
+                if (!name.getText().toString().isEmpty() && !email.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()){
+                    User user = new User(UUID.randomUUID().toString(),name.getText().toString(),email.getText().toString(),pass.getText().toString());
+                    signupViewModel.signUpUser(user);
+                }else{
+                    Toast.makeText(signupActivity,"Please fill in name,email & password",Toast.LENGTH_LONG).show();
+                }
+
+
 
 
             }
@@ -73,6 +87,9 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(signupActivity,"SignUp Successful",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
+                        break;
+                    case ApiCallStatusValue.UNSUCCESSFUL:
+                        Toast.makeText(signupActivity,"This user already exist",Toast.LENGTH_LONG).show();
                         break;
                     case ApiCallStatusValue.FAILURE:
                         Toast.makeText(signupActivity,"SignUp Failed",Toast.LENGTH_LONG).show();

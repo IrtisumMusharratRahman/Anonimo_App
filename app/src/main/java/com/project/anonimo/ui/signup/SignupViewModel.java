@@ -42,7 +42,12 @@ public class SignupViewModel extends ViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()){
-                    status.setValue(new ApiCallStatus(ApiCallStatusValue.FINISHED));
+                    if (response.body().equals("valid")){
+                        status.setValue(new ApiCallStatus(ApiCallStatusValue.FINISHED));
+                    }else {
+                        status.setValue(new ApiCallStatus(ApiCallStatusValue.UNSUCCESSFUL));
+                    }
+
                 }
             }
 

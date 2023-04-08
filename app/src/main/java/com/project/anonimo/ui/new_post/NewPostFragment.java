@@ -58,7 +58,7 @@ public class NewPostFragment extends Fragment implements OnItemClickListener {
         content = binding.etContent;
         btnPost = binding.btnPost;
         tagRV=binding.recyclerViewNewPostTag;
-        Tags tags = Tags.getInstance();
+        Tags tags = new Tags();
         NewPostFragment newPostFragment = this;
 
         adapter = new TagRecyclerAdapter(tags.getMyList());
@@ -74,7 +74,7 @@ public class NewPostFragment extends Fragment implements OnItemClickListener {
             public void onClick(View view) {
                 MainActivity mainActivity= (MainActivity) getActivity();
 
-                if (postTag != null){
+                if (postTag != null && !content.getText().toString().isEmpty()){
                     Post post = new Post(
                             UUID.randomUUID().toString(),
                             mainActivity.getUser().getUserID(),
@@ -85,7 +85,7 @@ public class NewPostFragment extends Fragment implements OnItemClickListener {
                     );
                     newPostViewModel.createPost(post);
                 }else {
-                    Toast.makeText(getActivity(),"Please Choose A Tag",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Please choose a tag and write something for the post",Toast.LENGTH_LONG).show();
                 }
 
 

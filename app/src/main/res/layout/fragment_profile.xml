@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:background="#121212"
     android:paddingHorizontal="12dp"
-    android:paddingBottom="?attr/actionBarSize">
+    android:layout_marginTop="10dp"
+    android:paddingBottom="?attr/actionBarSize"
+    android:paddingTop="?attr/actionBarSize">
 
     <include
         android:id="@+id/profile_progress_bar"

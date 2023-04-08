@@ -46,6 +46,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
     private String postTag;
     private Tags tags;
     private List<Post> posts;
+    private TextView tagHeader;
 
     private TagRecyclerAdapter tagRecyclerAdapter;
 
@@ -61,7 +62,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
         noData = binding.feedNoData.getRoot();
         tagRV = binding.recyclerViewFeedTag;
         postRv = binding.recyclerViewPosts;
-        tags= Tags.getInstance();
+        tagHeader=binding.tagHeader;
+        tags= new Tags();
 
         fragment=this;
 
@@ -86,8 +88,10 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
                         progressBar.setVisibility(View.GONE);
                         if(feedViewModel.getPosts() != null){
                             if (feedViewModel.getPosts().isEmpty()){
-                                noData.setVisibility(View.VISIBLE);
+                                tagHeader.setVisibility(View.GONE);
+                                tagRV.setVisibility(View.GONE);
                                 postRv.setVisibility(View.GONE);
+                                noData.setVisibility(View.VISIBLE);
 
                             }else {
 

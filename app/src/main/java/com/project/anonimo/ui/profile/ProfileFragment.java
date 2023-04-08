@@ -2,6 +2,7 @@ package com.project.anonimo.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class ProfileFragment extends Fragment {
         user_name.setText(user.getUserName());
         user_email.setText(user.getUserEmail());
 
+        profileViewModel.setPostStatus(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
         profileViewModel.setUpdateStatus(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
         profileViewModel.setDeleteStatus(new ApiCallStatus(ApiCallStatusValue.PROCESSING));
 
@@ -91,8 +93,13 @@ public class ProfileFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newUser = new User(user.getUserID(),user_name.getText().toString(),user.getUserEmail(),user.getUserPassword());
-                profileViewModel.updateUserName(newUser);
+                if (!user_name.getText().toString().isEmpty()){
+                    newUser = new User(user.getUserID(),user_name.getText().toString(),user.getUserEmail(),user.getUserPassword());
+                    profileViewModel.updateUserName(newUser);
+                }else{
+                    Toast.makeText(getActivity(),"Please fill in new user name",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -132,35 +139,38 @@ public class ProfileFragment extends Fragment {
                         break;
                     case ApiCallStatusValue.FINISHED:
                         progressBar.setVisibility(View.GONE);
-                        if(profileViewModel.getPosts() != null){
-                            if (profileViewModel.getPosts().isEmpty()){
+                        List<Post> postList = profileViewModel.getPosts();
+                        myPosts = new ArrayList<>();
+                        for (int i=0;i<postList.size();i++){
+                            if (mainActivity.getUser().getUserID().equals(postList.get(i).getUserID())){
+                                myPosts.add(postList.get(i));
+                            }
+                        }
+
+                        Collections.sort(myPosts, new Comparator<Post>() {
+                            @Override
+                            public int compare(Post post1, Post post2) {
+                                return post2.getPostTime().compareTo(post1.getPostTime());
+                            }
+                        });
+
+                        if(myPosts != null){
+                            Log.e("TAG", "onChanged: inside null" );
+                            if (myPosts.isEmpty()){
+                                Log.e("TAG", "onChanged: inside empty" );
                                 noData.setVisibility(View.VISIBLE);
                                 myPostRV.setVisibility(View.GONE);
 
                             }else {
-
-                                List<Post> postList = profileViewModel.getPosts();
-                                myPosts = new ArrayList<>();
-                                for (int i=0;i<postList.size();i++){
-                                    if (mainActivity.getUser().getUserID().equals(postList.get(i).getUserID())){
-                                        myPosts.add(postList.get(i));
-                                    }
-                                }
-
-                                Collections.sort(myPosts, new Comparator<Post>() {
-                                    @Override
-                                    public int compare(Post post1, Post post2) {
-                                        return post2.getPostTime().compareTo(post1.getPostTime());
-                                    }
-                                });
-
-
                                 adapter = new PostRecyclerAdapter(myPosts,fragment);
                                 myPostRV.setHasFixedSize(true);
                                 myPostRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 myPostRV.setAdapter(adapter);
                                 new ItemTouchHelper(new SwipeToDeleteCallback(adapter)).attachToRecyclerView(myPostRV);
                             }
+                        }else{
+                            Log.e("TAG", "onChanged: outside null" );
+                            noData.setVisibility(View.VISIBLE);
                         }
 
                         break;

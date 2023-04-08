@@ -1,10 +1,16 @@
 package com.project.anonimo.ui.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,18 +46,51 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        button.setBackground(getDrawable(R.drawable.button_background));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.black));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+        }
+
         Button button = binding.btnLogin;
         TextView forgotPassword = binding.tvForgotPassword;
         EditText name = binding.etUsername;
         EditText password = binding.etPassword;
         LoginActivity loginActivity = this;
 
+        SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
+        String email = sharedPref.getString("username", "");
+        String pass = sharedPref.getString("password", "");
+
+        if (!email.isEmpty() && !pass.isEmpty()) {
+            ConnectivityManager cm = (ConnectivityManager) loginActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            if (activeNetwork != null && activeNetwork.isConnected()) {
+                loginViewModel.signInUser(email,pass);
+            } else {
+                Toast.makeText(loginActivity,"No Internet",Toast.LENGTH_LONG).show();
+            }
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                loginViewModel.signInUser(name.getText().toString(),password.getText().toString());
+                ConnectivityManager cm = (ConnectivityManager) loginActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                if (activeNetwork != null && activeNetwork.isConnected()) {
+                    if (!name.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+                        loginViewModel.signInUser(name.getText().toString(),password.getText().toString());
+                    }else{
+                        Toast.makeText(loginActivity,"Please fill in email & password",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(loginActivity,"No Internet",Toast.LENGTH_LONG).show();
+                }
+
+
+
 
             }
         });
@@ -67,6 +106,15 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginViewModel.getUser()!=null){
                             User user =loginViewModel.getUser();
                             if (!(user.getUserID()==null)){
+
+
+                                SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("username", user.getUserEmail());
+                                editor.putString("password", user.getUserPassword());
+                                editor.apply();
+
+
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra("id",user.getUserID());
                                 intent.putExtra("name",user.getUserName());
@@ -74,11 +122,10 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("password",user.getUserPassword());
                                 startActivity(intent);
                             }else {
-                                Toast.makeText(loginActivity,"Login Failed",Toast.LENGTH_LONG).show();
+                                Toast.makeText(loginActivity,"Wrong email or password",Toast.LENGTH_LONG).show();
                             }
 
                         }
-
                         break;
                     case ApiCallStatusValue.FAILURE:
                         Toast.makeText(loginActivity,"Login Failed",Toast.LENGTH_LONG).show();

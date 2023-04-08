@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tags {
-    private static Tags instance;
+
     private List<String> tags;
 
-    private Tags() {
+    public Tags() {
         tags =new ArrayList<>();
         tags.add("art");
         tags.add("business");
@@ -26,12 +26,6 @@ public class Tags {
         tags.add("weather");
     }
 
-    public static Tags getInstance() {
-        if (instance == null) {
-            instance = new Tags();
-        }
-        return instance;
-    }
 
     public List<String> getMyList() {
         return tags;

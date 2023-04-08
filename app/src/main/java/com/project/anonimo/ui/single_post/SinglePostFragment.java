@@ -148,11 +148,18 @@ public class SinglePostFragment extends Fragment {
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Comment comment = new Comment(UUID.randomUUID().toString(),postID,doComment.getText().toString(),String.valueOf(Calendar.getInstance().getTimeInMillis()));
-                List<Comment> newCommentList = singlePost.getComments();
-                newCommentList.add(comment);
-                singlePost.setComments(newCommentList);
-                mViewModel.addComment(singlePost);
+
+                if (!doComment.getText().toString().isEmpty()){
+                    Comment comment = new Comment(UUID.randomUUID().toString(),postID,doComment.getText().toString(),String.valueOf(Calendar.getInstance().getTimeInMillis()));
+                    List<Comment> newCommentList = singlePost.getComments();
+                    newCommentList.add(comment);
+                    singlePost.setComments(newCommentList);
+                    mViewModel.addComment(singlePost);
+                }else{
+                    Toast.makeText(getActivity(),"Please fill in comment section",Toast.LENGTH_LONG).show();
+                }
+
+
             }
         });
 
